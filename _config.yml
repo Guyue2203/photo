@@ -1,0 +1,27 @@
+# Base configs
+baseurl: "https://starstill.art"
+image_base_url: "https://s.guyue.me/starstill/img"
+images_json_url: "https://s.guyue.me/starstill/images.json"
+google_analytics:
+
+# UI configs
+title: "摄影 | 星依旧"
+subtitle: "碰个拳，要开心。"
+author: "星依旧"
+header:
+ title: "摄影"
+ subtitle: "星依旧"
+footer:
+ name: "星依旧"
+ bio: "碰个拳，要开心。"
+ email: "hi@starstill.art"
+ repository: "https://github.com/guyue2203/photo/"
+web_design: "AJ"
+
+social_urls:
+  xiaohongshu: "https://xhslink.com/m/37fRDCXH57i"
+  github: "https://github.com/guyue2203/photo/"
+
+# Configure which exif data to display
+# Tag is the actual exif tag, icon is a fontawesome icon. Use JSON notation without line breaks
+exif: '[{"tag": "Model", "icon": "fa fa-camera-retro"}, {"tag": "FNumber", "icon": "far fa-dot-circle"}, {"tag": "ExposureTime", "icon": "far fa-clock"}, {"tag": "ISOSpeedRatings", "icon": "fa fa-info-circle"}]'

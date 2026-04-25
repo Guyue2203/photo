@@ -1,0 +1,37 @@
+{
+  "name": "photo",
+  "version": "5.0.0",
+  "description": "星依旧的摄影作品集",
+  "main": "npmfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guyue2203/photo.git"
+  },
+  "keywords": [
+    "photography",
+    "jekyll",
+    "website",
+    "template",
+    "website template",
+    "portfolio",
+    "portfolio website"
+  ],
+  "author": "星依旧",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/guyue2203/photo/issues"
+  },
+  "homepage": "https://github.com/guyue2203/photo#readme",
+  "devDependencies": {
+    "del": "^4.1.1",
+    "gulp": "^4.0.2",
+    "gulp-filter": "^9.0.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-uglify": "^3.0.0",
+    "sass": "^1.25.0"
+  }
+}
