@@ -3,7 +3,6 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 
-	Added EXIF data and enhanced for Jekyll by Ram Patra
 */
 
 (function ($) {
@@ -169,8 +168,7 @@
 	});
   
 	// Main.
-	var $main = $("#main"),
-		exifDatas = {};
+	var $main = $("#main");
 
 	loadImageList()
 		.then(function (images) {
@@ -209,23 +207,16 @@
 
 			if (!image.src) return;
 
-			var $img = $("<img />")
-				.attr("src", image.thumb)
-				.attr("alt", image.alt)
-				.attr("crossorigin", "anonymous")
-				.attr("data-name", image.name);
+			var $link = $("<a />")
+				.attr("href", image.src)
+				.attr("aria-label", image.alt || image.name)
+				.attr("data-thumb", image.thumb)
+				.attr("data-name", image.name)
+				.addClass("image");
 
-			if (image.position) $img.attr("data-position", image.position);
+			if (image.position) $link.attr("data-position", image.position);
 
-			$("<article />")
-				.addClass("thumb")
-				.append(
-					$("<a />")
-						.attr("href", image.src)
-						.addClass("image")
-						.append($img)
-				)
-				.appendTo($main);
+			$("<article />").addClass("thumb").append($link).appendTo($main);
 		});
 	}
 
@@ -270,7 +261,6 @@
 		$main.children(".thumb").each(function () {
 			var $this = $(this),
 			$image = $this.find(".image"),
-			$image_img = $image.children("img"),
 			x;
 
 			// No image? Bail.
@@ -281,20 +271,10 @@
 			// <img> (which is then hidden). Gives us way more flexibility.
 
 			// Set background.
-			$image.css("background-image", "url(" + $image_img.attr("src") + ")");
+			$image.css("background-image", "url(" + $image.data("thumb") + ")");
 
 			// Set background position.
-			if ((x = $image_img.data("position"))) $image.css("background-position", x);
-
-			// Hide original img.
-			$image_img.hide();
-
-			// EXIF data
-			$image_img[0].addEventListener("load", function() {
-				EXIF.getData($image_img[0], function () {
-					exifDatas[$image_img.data('name')] = getExifDataMarkup(this);
-				});
-			});
+			if ((x = $image.data("position"))) $image.css("background-position", x);
 		});
 	}
 
@@ -303,16 +283,8 @@
 		$main.poptrox({
 			baseZIndex: 20000,
 			caption: function ($a) {
-				var $image_img = $a.children('img');
-				var data = exifDatas[$image_img.data('name')];
-				if (data === undefined) {
-					// EXIF data
-					EXIF.getData($image_img[0], function () {
-						data = exifDatas[$image_img.data('name')] = getExifDataMarkup(this);
-					});
-				}
-				return data !== undefined ? '<p>' + data + '</p>' : ' ';
-		},
+				return " ";
+			},
 			fadeSpeed: 300,
 			onPopupClose: function () {
 				$body.removeClass("modal-active");
@@ -345,19 +317,4 @@
 			$main[0]._poptrox.windowMargin = 50;
 		});
 	}
-  
-	function getExifDataMarkup(img) {
-		var exif = $('#main').data('exif');
-		var template = '';
-
-		for (var current in exif) {
-			var current_data = exif[current];
-			var exif_data = EXIF.getTag(img, current_data['tag']);
-			if (typeof exif_data !== "undefined") {
-				template += '<i class="' + current_data['icon'] + '" aria-hidden="true"></i> ' + exif_data + '&nbsp;&nbsp;';
-			}
-		}
-		return template;
-	}
-
   })(jQuery);
