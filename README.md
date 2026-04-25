@@ -104,7 +104,7 @@ node scripts/prepare-images.mjs --root /var/guyue/s.guyue.me/starstill
 /var/guyue/s.guyue.me/starstill/images.json
 ```
 
-运行前需要安装 ImageMagick，并确保 `magick` 命令可用。
+运行前需要安装 ImageMagick，并确保 `magick` 或 `convert` 命令可用。
 
 ## 部署
 
