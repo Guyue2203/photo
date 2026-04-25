@@ -4,6 +4,7 @@
   "description": "星依旧的摄影作品集",
   "main": "npmfile.js",
   "scripts": {
+    "photos": "node scripts/prepare-images.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

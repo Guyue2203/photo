@@ -77,6 +77,35 @@ npx gulp build
 
 当前图片从远程地址读取，通常不需要运行图片缩略图生成任务。
 
+## 生成缩略图
+
+服务器上准备目录：
+
+```text
+/var/guyue/s.guyue.me/starstill/img/full/
+```
+
+把原图放进 `img/full` 后，在服务器运行：
+
+```bash
+npm run photos -- --root /var/guyue/s.guyue.me/starstill
+```
+
+也可以直接运行：
+
+```bash
+node scripts/prepare-images.mjs --root /var/guyue/s.guyue.me/starstill
+```
+
+脚本会自动生成：
+
+```text
+/var/guyue/s.guyue.me/starstill/img/thumb/
+/var/guyue/s.guyue.me/starstill/images.json
+```
+
+运行前需要安装 ImageMagick，并确保 `magick` 命令可用。
+
 ## 部署
 
 项目仓库：<https://github.com/guyue2203/photo/>
