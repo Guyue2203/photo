@@ -179,8 +179,9 @@ server/
 | `UPLOAD_PASS` | 认证密码 | `admin` |
 | `PORT` | 服务器端口 | `2655` |
 | `IMAGEMAGICK_COMMAND` | ImageMagick 命令 | `magick` |
-| `THUMB_WIDTH` | 缩略图宽度 | `800` |
-| `THUMB_QUALITY` | 缩略图质量 (0-100) | `82` |
+| `THUMB_WIDTH` | 缩略图宽度 | `1600` |
+| `THUMB_QUALITY` | 缩略图质量 (0-100) | `90` |
+| `THUMB_SHARPEN` | 缩略图锐化参数 | `0x0.6` |
 
 ## 🔄 工作流程
 

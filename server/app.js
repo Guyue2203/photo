@@ -49,8 +49,9 @@ const CONFIG = {
     password: process.env.UPLOAD_PASS || 'admin'
   },
   imagemagick: process.env.IMAGEMAGICK_COMMAND || 'magick',
-  thumbnailWidth: process.env.THUMB_WIDTH || '800',
-  thumbnailQuality: process.env.THUMB_QUALITY || '82',
+  thumbnailWidth: process.env.THUMB_WIDTH || '1600',
+  thumbnailQuality: process.env.THUMB_QUALITY || '90',
+  thumbnailSharpen: process.env.THUMB_SHARPEN || '0x0.6',
   // 图片基础 URL（用于前端显示缩略图）
   // 例如: https://s.guyue.me/starstill/img 或 /starstill/img (相对路径)
   imageBaseUrl: process.env.IMAGE_BASE_URL || '/starstill/img'
@@ -111,6 +112,8 @@ async function generateThumbnail(sourceFile, targetFile) {
       '-auto-orient',
       '-resize',
       `${CONFIG.thumbnailWidth}x`,
+      '-unsharp',
+      CONFIG.thumbnailSharpen,
       '-quality',
       CONFIG.thumbnailQuality,
       targetFile

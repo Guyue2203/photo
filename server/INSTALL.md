@@ -99,8 +99,9 @@ IMAGE_BASE_URL=/starstill/img
 IMAGEMAGICK_COMMAND=magick
 
 # 缩略图配置
-THUMB_WIDTH=800
-THUMB_QUALITY=82
+THUMB_WIDTH=1600
+THUMB_QUALITY=90
+THUMB_SHARPEN=0x0.6
 ```
 
 2. **创建目录结构**
@@ -380,8 +381,9 @@ which convert
 
 # 测试生成缩略图
 magick /var/guyue/s.guyue.me/starstill/img/full/test.jpg \
-       -resize 800x \
-       -quality 82 \
+       -resize 1600x \
+       -unsharp 0x0.6 \
+       -quality 90 \
        /var/guyue/s.guyue.me/starstill/img/thumb/test.jpg
 ```
 
@@ -429,8 +431,9 @@ location ~ ^/starstill/img/ {
 
 ```env
 # 更小的尺寸 = 更快的加载 + 更少的带宽
-THUMB_WIDTH=600      # 而不是 800
-THUMB_QUALITY=75     # 而不是 82
+THUMB_WIDTH=1200     # 而不是 1600
+THUMB_QUALITY=85     # 而不是 90
+THUMB_SHARPEN=0x0.4
 ```
 
 ## 📞 获取帮助

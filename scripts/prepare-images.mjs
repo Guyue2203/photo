@@ -9,8 +9,9 @@ const rootDir = path.resolve(options.root || ".");
 const fullDir = path.resolve(options.full || path.join(rootDir, "img", "full"));
 const thumbDir = path.resolve(options.thumb || path.join(rootDir, "img", "thumb"));
 const jsonPath = path.resolve(options.json || path.join(rootDir, "images.json"));
-const width = String(options.width || 800);
-const quality = String(options.quality || 82);
+const width = String(options.width || 1600);
+const quality = String(options.quality || 90);
+const sharpen = String(options.sharpen || "0x0.6");
 
 if (options.help) {
   printHelp();
@@ -39,6 +40,8 @@ for (const file of files) {
     "-auto-orient",
     "-resize",
     `${width}x`,
+    "-unsharp",
+    sharpen,
     "-quality",
     quality,
     target
@@ -123,7 +126,8 @@ Options:
   --full     Source full-size image directory. Default: <root>/img/full
   --thumb    Thumbnail output directory. Default: <root>/img/thumb
   --json     images.json output path. Default: <root>/images.json
-  --width    Thumbnail width in pixels. Default: 800
-  --quality  Thumbnail quality. Default: 82
+  --width    Thumbnail width in pixels. Default: 1600
+  --quality  Thumbnail quality. Default: 90
+  --sharpen  Thumbnail sharpen amount. Default: 0x0.6
 `);
 }

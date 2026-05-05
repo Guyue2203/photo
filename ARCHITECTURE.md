@@ -227,8 +227,9 @@ UPLOAD_DIR=/var/guyue/s.guyue.me/starstill
 UPLOAD_USER=admin
 UPLOAD_PASS=your_secure_password
 PORT=2655
-THUMB_WIDTH=800
-THUMB_QUALITY=82
+THUMB_WIDTH=1600
+THUMB_QUALITY=90
+THUMB_SHARPEN=0x0.6
 ```
 
 ## 🎨 images.json 数据格式
