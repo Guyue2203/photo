@@ -5,6 +5,9 @@
   "main": "npmfile.js",
   "scripts": {
     "photos": "node scripts/prepare-images.mjs",
+    "upload-server:install": "cd server && npm install",
+    "upload-server:dev": "cd server && npm run dev",
+    "upload-server:start": "cd server && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

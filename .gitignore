@@ -76,3 +76,11 @@ jspm_packages
 .node_repl_history
 
 /Gemfile.lock
+
+# Upload Server
+server/.env
+server/node_modules/
+server/data/
+server/.env.local
+server/.env.*.local
+

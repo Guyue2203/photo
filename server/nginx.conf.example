@@ -1,0 +1,107 @@
+# Nginx 配置示例 - s.guyue.me 当前部署结构
+#
+# 前端 starstill.art 会读取：
+#   https://s.guyue.me/starstill/images.json
+#   https://s.guyue.me/starstill/img/...
+#
+# 上传管理后台访问：
+#   https://s.guyue.me/starstill/manage
+#
+# Node 上传服务本地监听：
+#   127.0.0.1:2655
+
+upstream photo_upload_server {
+    server 127.0.0.1:2655;
+    keepalive 64;
+}
+
+server {
+    listen 80;
+    server_name s.guyue.me;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name s.guyue.me;
+
+    ssl_certificate /etc/nginx/ssl/.guyue.me/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/.guyue.me/cert.key;
+
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout 10m;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    root /var/guyue/s.guyue.me;
+    index index.html;
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+
+    # 照片上传管理后台。
+    # 注意：必须放在 location /starstill/ 前面，避免被静态文件规则吞掉。
+    location = /starstill/manage {
+        return 301 /starstill/manage/;
+    }
+
+    location ^~ /starstill/manage/ {
+        rewrite ^/starstill/manage/?(.*)$ /$1 break;
+
+        proxy_pass http://photo_upload_server;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_buffering off;
+
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+        client_max_body_size 100M;
+    }
+
+    # 图片元数据。覆盖通用 /starstill/，便于给 JSON 单独设置缓存策略。
+    location = /starstill/images.json {
+        add_header Access-Control-Allow-Origin "https://starstill.art" always;
+        add_header Access-Control-Allow-Methods "GET, HEAD, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "*" always;
+        add_header Cache-Control "no-cache" always;
+
+        if ($request_method = OPTIONS) {
+            return 204;
+        }
+
+        try_files $uri =404;
+    }
+
+    # 图片和 starstill 目录下的其他静态文件。
+    location /starstill/ {
+        add_header Access-Control-Allow-Origin "https://starstill.art" always;
+        add_header Access-Control-Allow-Methods "GET, HEAD, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "*" always;
+
+        if ($request_method = OPTIONS) {
+            return 204;
+        }
+
+        try_files $uri $uri/ =404;
+    }
+
+    location /self/ {
+        auth_basic "Private Area";
+        auth_basic_user_file /etc/nginx/htpasswd/.htpasswd-guyue;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

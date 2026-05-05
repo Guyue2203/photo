@@ -52,6 +52,51 @@ https://s.guyue.me/starstill/images.json
 
 网站会先读取 `images.json`，再从 `https://s.guyue.me/starstill/img/文件名` 加载图片。本项目不再需要提交本地图片或缩略图。
 
+## 📸 照片上传系统
+
+本项目包含一个完整的照片上传和管理系统，可以：
+- 🖼️ 上传照片并自动生成缩略图
+- 📝 管理照片元数据
+- 🔒 提供 Basic Auth 身份认证
+
+详见 [server/README.md](./server/README.md)
+
+### 快速开始
+
+```bash
+# 初始化上传服务器
+cd server
+bash setup.sh
+
+# 编辑 .env 文件配置上传路径和认证
+vim .env
+
+# 启动服务器
+npm start
+
+# 或开发模式（支持热重载）
+npm run dev
+```
+
+访问 http://localhost:2655 即可使用上传管理界面。
+
+### 生产部署
+
+```bash
+# 在服务器上克隆项目
+git clone https://github.com/guyue2203/photo.git
+cd photo/server
+
+# 初始化
+bash setup.sh
+
+# 配置 nginx 反向代理（见 server/DEPLOYMENT.md）
+# 配置 systemd 服务或 PM2（见 server/DEPLOYMENT.md）
+
+# 启动服务
+npm start
+```
+
 ## 本地预览
 
 ```bash
