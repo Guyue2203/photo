@@ -6,9 +6,9 @@ After=network.target
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/photo/server
-EnvironmentFile=/var/www/photo/server/.env
-ExecStart=/usr/bin/node /var/www/photo/server/app.js
+WorkingDirectory=/var/guyue/s.guyue.me/starstill/server
+EnvironmentFile=/var/guyue/s.guyue.me/starstill/server/.env
+ExecStart=/usr/bin/node /var/guyue/s.guyue.me/starstill/server/app.js
 Restart=on-failure
 RestartSec=10
 

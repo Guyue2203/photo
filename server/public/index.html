@@ -441,13 +441,12 @@
         
         const API_BASE = getApiBase();
         let selectedFile = null;
-        let credentials = null;
         let imageBaseUrl = '/starstill/img';  // 默认图片基础 URL
 
         // 获取配置（包括图片基础 URL）
         async function loadConfig() {
             try {
-                const response = await fetch(`${API_BASE}/config`);
+                const response = await fetch(`${API_BASE}/config`, { credentials: 'same-origin' });
                 if (response.ok) {
                     const config = await response.json();
                     imageBaseUrl = config.imageBaseUrl || imageBaseUrl;
@@ -457,26 +456,12 @@
             }
         }
 
-        // 初始化认证
-        function initAuth() {
-            credentials = localStorage.getItem('uploadCredentials');
-            if (!credentials) {
-                const username = prompt('请输入用户名:');
-                if (!username) return;
-                const password = prompt('请输入密码:');
-                if (!password) return;
-                credentials = btoa(`${username}:${password}`);
-                localStorage.setItem('uploadCredentials', credentials);
-            }
-        }
-
         // API 请求助手
         async function apiRequest(method, endpoint, data = null, isFormData = false) {
             const options = {
                 method,
-                headers: {
-                    'Authorization': `Basic ${credentials}`
-                }
+                headers: {},
+                credentials: 'same-origin'
             };
 
             if (data) {
@@ -673,7 +658,6 @@
         // 初始化
         window.addEventListener('load', () => {
             loadConfig();
-            initAuth();
         });
     </script>
 </body>

@@ -196,7 +196,7 @@ pm2 logs photo-upload
 复制模板并按需调整路径：
 
 ```bash
-sudo cp /var/www/photo/server/photo-upload.service.example /etc/systemd/system/photo-upload.service
+sudo cp /var/guyue/s.guyue.me/starstill/server/photo-upload.service.example /etc/systemd/system/photo-upload.service
 sudo vim /etc/systemd/system/photo-upload.service
 ```
 
@@ -211,9 +211,9 @@ After=network.target
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/photo/server
-EnvironmentFile=/var/www/photo/server/.env
-ExecStart=/usr/bin/node /var/www/photo/server/app.js
+WorkingDirectory=/var/guyue/s.guyue.me/starstill/server
+EnvironmentFile=/var/guyue/s.guyue.me/starstill/server/.env
+ExecStart=/usr/bin/node /var/guyue/s.guyue.me/starstill/server/app.js
 Restart=on-failure
 RestartSec=10
 

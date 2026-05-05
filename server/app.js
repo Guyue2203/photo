@@ -73,20 +73,18 @@ const upload = multer({
 // 基础路径前缀（用于 Nginx 反向代理）
 const BASE_PATH = process.env.BASE_PATH || '';
 
-// 中间件
-app.use(express.json());
-app.use(BASE_PATH || '/', express.static('public'));
-
 // Basic Auth 中间件
 const basicAuth = (req, res, next) => {
   const auth = req.headers.authorization;
 
   if (!auth) {
+    res.set('WWW-Authenticate', 'Basic realm="Starstill Photo Upload"');
     return res.status(401).json({ error: 'Authorization required' });
   }
 
   const [scheme, credentials] = auth.split(' ');
-  if (scheme !== 'Basic') {
+  if (scheme !== 'Basic' || !credentials) {
+    res.set('WWW-Authenticate', 'Basic realm="Starstill Photo Upload"');
     return res.status(401).json({ error: 'Invalid auth scheme' });
   }
 
@@ -94,11 +92,16 @@ const basicAuth = (req, res, next) => {
   const [username, password] = decoded.split(':');
 
   if (username !== CONFIG.auth.username || password !== CONFIG.auth.password) {
-    return res.status(403).json({ error: 'Invalid credentials' });
+    res.set('WWW-Authenticate', 'Basic realm="Starstill Photo Upload"');
+    return res.status(401).json({ error: 'Invalid credentials' });
   }
 
   next();
 };
+
+// 中间件
+app.use(express.json());
+app.use(BASE_PATH || '/', basicAuth, express.static(path.join(__dirname, 'public')));
 
 // 生成缩略图
 async function generateThumbnail(sourceFile, targetFile) {
@@ -213,7 +216,7 @@ app.post(BASE_PATH + '/api/upload', basicAuth, upload.single('image'), async (re
 });
 
 // 获取图片列表端点
-app.get(BASE_PATH + '/api/images', async (req, res) => {
+app.get(BASE_PATH + '/api/images', basicAuth, async (req, res) => {
   try {
     const imagesList = await readImagesList();
     res.json(imagesList);
@@ -261,7 +264,7 @@ if (BASE_PATH) {
 }
 
 // 配置端点（前端获取图片基础 URL 和其他配置）
-app.get(BASE_PATH + '/api/config', (req, res) => {
+app.get(BASE_PATH + '/api/config', basicAuth, (req, res) => {
   res.json({
     imageBaseUrl: CONFIG.imageBaseUrl,
     basePath: BASE_PATH
@@ -269,7 +272,7 @@ app.get(BASE_PATH + '/api/config', (req, res) => {
 });
 
 // 健康检查
-app.get(BASE_PATH + '/health', (req, res) => {
+app.get(BASE_PATH + '/health', basicAuth, (req, res) => {
   res.json({ status: 'ok', config: { uploadDir: CONFIG.uploadDir }, basePath: BASE_PATH });
 });
 
