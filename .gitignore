@@ -6,7 +6,7 @@
 
 ## Directory-based project format:
 .idea/
-
+.bundle
 ## File-based project format:
 *.ipr
 *.iws
